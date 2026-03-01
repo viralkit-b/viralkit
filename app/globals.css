@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --bg-dark: #020617;
+    --text-light: #f1f5f9;
+  }
+  html {
+    height: 100%;
+    background-color: #020617 !important;
+  }
+  body {
+    height: 100%;
+    margin: 0;
+    background: #020617 !important;
+    background-image: linear-gradient(160deg, #020617 0%, #0f172a 40%, #0c1222 70%, #020617 100%) !important;
+    color: #f1f5f9 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Glassmorphism panel */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Glowing bordered textarea container */
+.input-glow {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.25), rgba(56, 189, 248, 0.15), rgba(139, 92, 246, 0.25));
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.input-glow:focus-within {
+  box-shadow: 0 0 28px rgba(34, 211, 238, 0.35), 0 0 50px rgba(139, 92, 246, 0.15);
+}
+
+.textarea-glow:focus {
+  box-shadow: none;
+}
+
+/* Generate button */
+.btn-generate {
+  background: linear-gradient(135deg, #22d3ee, #38bdf8, #8b5cf6);
+  background-size: 200% 200%;
+}
+
+.btn-generate:not(:disabled):hover {
+  background-position: 100% 50%;
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.btn-generate:not(:disabled) {
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* Result card fade-in */
+.result-card {
+  animation: result-fade-in 0.5s ease-out forwards;
+}
+
+@keyframes result-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.brand-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
