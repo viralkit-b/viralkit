@@ -83,32 +83,27 @@ export async function POST(request: Request): Promise<Response> {
       }
     }
 
-    if (!completion?.choices?.length) {
-      const err = lastError as { status?: number; message?: string };
-      const msg =
-        err?.status === 401
-          ? "Invalid API key. Please check your GROQ_API_KEY in .env.local and restart the server."
-          : "The AI service is temporarily unavailable. Please try again in a moment.";
-      return new Response(JSON.stringify({ error: msg }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+    // @ts-ignore
+  const choices = (completion as any).choices;
 
-    const rawContent = completion.choices[0].message?.content;
-    let content: string;
-    if (typeof rawContent === "string") {
-      content = rawContent;
-    } else if (Array.isArray(rawContent)) {
-      content = rawContent
-        .map((part: unknown) =>
-          typeof part === "string" ? part : (part as { text?: string })?.text ?? ""
-        )
-        .filter(Boolean)
-        .join("\n");
-    } else {
-      content = "";
-    }
+  if (!choices || choices.length === 0) {
+    return new Response(JSON.stringify({ error: "AI Response Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const rawContent = choices[0].message?.content;
+  let content: string = "";
+
+  if (typeof rawContent === "string") {
+    content = rawContent;
+  } else if (Array.isArray(rawContent)) {
+    content = rawContent
+      .map((part: any) => (typeof part === "string" ? part : (part as { text?: string })?.text || ""))
+      .filter(Boolean)
+      .join("\n");
+  }
 
     if (!content?.trim()) {
       return new Response(
@@ -135,3 +130,4 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 }
+
